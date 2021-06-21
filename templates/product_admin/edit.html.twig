@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <a href="{{ path('product_admin_index') }}"><i class="fas fa-caret-left"></i> Back to list</a>
+    <turbo-frame id="product-info" target="_top">
+        <div class="d-flex justify-content-between">
+            <h1 class="mt-3">Edit Product</h1>
+            {{ include('product_admin/_delete_form.html.twig') }}
+        </div>
+
+        {{ include('product_admin/_form.html.twig', {'button_label': 'Update'}) }}
+    </turbo-frame>
+</div>
+{% endblock %}

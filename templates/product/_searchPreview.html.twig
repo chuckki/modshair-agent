@@ -1,0 +1,30 @@
+<div class="list-group">
+    {% for product in products %}
+        <a
+            role="option"
+            class="list-group-item list-group-item-action"
+            href="{{ path('app_product', { id: product.id }) }}"
+        >
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <img
+                        alt="{{ product.name }}"
+
+                        {% if product.category.id == 1 %}
+                        src="{{ asset('/uploads/products/milbon-logo.png') }}"
+                        {% endif %}
+                        {% if product.category.id == 2 %}
+                        src="{{ asset('/uploads/products/tahe-logo.png') }}"
+                        {% endif %}
+
+                        class="rounded"
+                    >
+                    <span class="px-1">{{ product.name }}</span>
+                </div>
+                <em>{{ product.priceString|format_currency('EUR') }}</em>
+            </div>
+        </a>
+    {% else %}
+        <div class="list-group-item" role="option" aria-disabled="true">Kein Ergebnis!</div>
+    {% endfor %}
+</div>

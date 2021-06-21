@@ -1,0 +1,70 @@
+<div>
+    <div class="row p-3">
+        <div class="col-6 fw-bold">
+            Produkt
+        </div>
+        <div class="col-2 fw-bold">
+            Anzahl
+        </div>
+        <div class="col-2 fw-bold">
+            Preis
+        </div>
+        <div class="col-2"></div>
+    </div>
+    {% for item in cart.items %}
+        <div
+            class="cart-item row p-3"
+            data-action="submit-confirm:async:submitted->reload-content#refreshContent"
+        >
+            <div class="col-6">
+                {{ item.product.name }}
+            </div>
+            <div class="col-2">
+                {{ item.quantity }}
+            </div>
+            <div class="col-2">
+                {{ item.totalString|format_currency('EUR') }}
+            </div>
+            <div class="col-2">
+                <form
+                    action="{{ path('app_cart_remove_item', {
+                        productId: item.product.id,
+                        colorId: item.color ? item.color.id: null,
+                    }) }}"
+                    method="POST"
+                    {{ stimulus_controller('submit-confirm', {
+                        title: 'Produkt entfernen?',
+                        icon: 'warning',
+                        confirmButtonText: 'Ja, entfernen',
+                        submitAsync: true,
+                    }) }}
+                    data-action="submit-confirm#onSubmit"
+                >
+                    <input type="hidden" name="_token" value="{{ csrf_token('remove_item') }}" />
+
+                    <button class="btn btn-info btn-sm">
+                        Entfernen
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="col text-center mt-5">
+            Warenkorb ist leer! <a href="{{ path('app_homepage') }}">Weiter Shoppen</a>
+        </div>
+    {% endfor %}
+
+    {% if cart.items|length > 0 %}
+    <div class="p-3">
+        Total: <strong>{{ cart.totalString|format_currency('EUR') }}</strong>
+    </div>
+    {% endif %}
+</div>
+
+{% if cart.items|length > 0 %}
+<div>
+    <a href="{{ path('app_checkout') }}" class="btn btn-primary">
+        Check Out &gt;&gt;
+    </a>
+</div>
+{% endif %}
