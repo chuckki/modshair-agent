@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
-
+ * @IsGranted("ROLE_USER")
  */
 class ProductController extends AbstractController
 {
