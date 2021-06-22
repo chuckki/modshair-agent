@@ -31,7 +31,7 @@ class CheckoutController extends AbstractController
 
         $checkoutForm = $this->createForm(EndCustomerFormType::class);
 
-        dump($checkoutForm->getData());
+
         $checkoutForm->handleRequest($request);
         if ($checkoutForm->isSubmitted() && $checkoutForm->isValid()) {
 
