@@ -71,6 +71,12 @@ class Purchase
      */
     private $purchaseItems;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=EndCustomer::class, inversedBy="purchases")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $endcustomer;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -226,5 +232,17 @@ class Purchase
     public function getTotalString(): string
     {
         return (string) ($this->getTotal() / 100);
+    }
+
+    public function getEndcustomer(): ?EndCustomer
+    {
+        return $this->endcustomer;
+    }
+
+    public function setEndcustomer(?EndCustomer $endcustomer): self
+    {
+        $this->endcustomer = $endcustomer;
+
+        return $this;
     }
 }

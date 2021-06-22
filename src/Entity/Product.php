@@ -99,15 +99,9 @@ class Product
      */
     private $imageFilename = 'floppy-disc.png';
 
-    /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="product", cascade={"remove"})
-     */
-    private $reviews;
-
     public function __construct()
     {
         $this->colors = new ArrayCollection();
-        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -253,29 +247,6 @@ class Product
     public function getImageUrl(): string
     {
         return sprintf('/uploads/products/'.$this->imageFilename);
-    }
-
-    /**
-     * @return Collection|Review[]
-     */
-    public function getReviews(): Collection
-    {
-        return $this->reviews;
-    }
-
-    public function getAverageStars(): float
-    {
-        if (count($this->getReviews()) === 0) {
-            return 0;
-        }
-
-        $totalRating = 0;
-        // this is an inefficient way of doing this ;)
-        foreach ($this->getReviews() as $review) {
-            $totalRating += $review->getStars();
-        }
-
-        return round($totalRating / count($this->getReviews()), 1);
     }
 
     public function __toString(): string

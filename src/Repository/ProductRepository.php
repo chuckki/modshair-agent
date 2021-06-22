@@ -44,14 +44,4 @@ class ProductRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function findFeatured(): ?Product
-    {
-        return $this->createQueryBuilder('product')
-            ->leftJoin('product.colors', 'color')
-            ->andWhere('color.id IS NOT NULL')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
 }

@@ -41,16 +41,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="owner", orphanRemoval=true)
-     */
-    private $reviews;
-
-    public function __construct()
-    {
-        $this->reviews = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -129,32 +119,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Review[]
-     */
-    public function getReviews(): Collection
-    {
-        return $this->reviews;
-    }
-
-    public function addReview(Review $review): self
-    {
-        if (!$this->reviews->contains($review)) {
-            $this->reviews[] = $review;
-        }
-
-        return $this;
-    }
-
-    public function removeReview(Review $review): self
-    {
-        $this->reviews->removeElement($review);
-
-        return $this;
-    }
 
     public function __toString(): string
     {
         return (string) $this->getEmail();
     }
+
+    public function getUsername(): string
+    {
+       return $this->__toString();
+    }
+
+
 }

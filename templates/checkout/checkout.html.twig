@@ -15,28 +15,10 @@
 
                     {{ form_start(checkoutForm) }}
                         <div class="form-row">
-                            {{ form_row(checkoutForm.customerName, {
-                                row_attr: { class: 'col mb-3' }
-                            }) }}
-                            {{ form_row(checkoutForm.customerEmail, {
-                                row_attr: { class: 'col mb-3' }
-                            }) }}
-                        </div>
-
-                        {{ form_row(checkoutForm.customerAddress) }}
-
-                        <div class="form-row">
-                            {{ form_row(checkoutForm.customerCity, {
+                            {{ form_row(checkoutForm.endCustomer, {
                                 row_attr: { class: 'col mb-3' }
                             }) }}
 
-                            {{ form_row(checkoutForm.customerZip, {
-                                row_attr: { class: 'col mb-3' }
-                            }) }}
-
-                            {{ form_row(checkoutForm.customerPhone, {
-                                row_attr: { class: 'col' }
-                            }) }}
                         </div>
 
                         <div class="form-row d-flex justify-content-end mt-4">

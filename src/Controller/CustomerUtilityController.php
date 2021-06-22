@@ -7,11 +7,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_USER")
+ */
 class CustomerUtilityController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
     /**
      * @Route("/api/customer/", methods="GET", name="endcustomer_api")
-     * @IsGranted("ROLE_USER")
      */
     public function getEndCustomerApi(EndCustomerRepository $endCustomerRepository, Request $request){
 

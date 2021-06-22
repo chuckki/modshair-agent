@@ -3,36 +3,49 @@
 namespace App\Controller;
 
 
+use App\Entity\EndCustomer;
 use App\Entity\Purchase;
-use App\Form\AddItemToCartFormType;
 use App\Form\CheckoutFormType;
-use App\Repository\ProductRepository;
+use App\Form\EndCustomerFormType;
 use App\Repository\PurchaseRepository;
 use App\Service\CartStorage;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_USER")
+ */
 class CheckoutController extends AbstractController
 {
     /**
      * @Route("/checkout", name="app_checkout")
      */
-    public function checkout(ProductRepository $productRepository, Request $request, CartStorage $cartStorage, EntityManagerInterface $entityManager, SessionInterface $session): Response
+    public function checkout(Request $request, CartStorage $cartStorage, EntityManagerInterface $entityManager, SessionInterface $session): Response
     {
-        $checkoutForm = $this->createForm(CheckoutFormType::class);
-        //$featuredProduct = $productRepository->findFeatured();
-        //$addToCartForm = $this->createForm(AddItemToCartFormType::class, null, [
-        //    'product' => $featuredProduct,
-        //]);
+        //$checkoutForm = $this->createForm(CheckoutFormType::class);
 
+        $checkoutForm = $this->createForm(EndCustomerFormType::class);
+
+        dump($checkoutForm->getData());
         $checkoutForm->handleRequest($request);
         if ($checkoutForm->isSubmitted() && $checkoutForm->isValid()) {
-            /** @var Purchase $purchase */
-            $purchase = $checkoutForm->getData();
+
+            /** @var EndCustomer $endcustomer */
+            $endcustomer = $checkoutForm->getData()['endCustomer'];
+
+            $purchase = new Purchase();
+            $purchase->setEndcustomer($endcustomer);
+            $purchase->setCustomerAddress($endcustomer->getStreet());
+            $purchase->setCustomerCity($endcustomer->getCity());
+            $purchase->setCustomerZip($endcustomer->getPostcode());
+            $purchase->setCustomerName($endcustomer->getFirma());
+            $purchase->setCustomerEmail('nomail@email.com');
+
             $purchase->addItemsFromCart($cartStorage->getCart());
 
             $entityManager->persist($purchase);
@@ -46,8 +59,6 @@ class CheckoutController extends AbstractController
 
         return $this->renderForm('checkout/checkout.html.twig', [
             'checkoutForm' => $checkoutForm,
-            //'featuredProduct' => $featuredProduct,
-            //'addToCartForm' => $addToCartForm,
         ]);
     }
 

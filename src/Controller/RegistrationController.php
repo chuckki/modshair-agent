@@ -48,7 +48,6 @@ class RegistrationController extends AbstractController
 
         return $this->renderForm('registration/register.html.twig', [
             'registrationForm' => $form,
-            'featuredProduct' => $productRepository->findFeatured(),
         ]);
     }
 }

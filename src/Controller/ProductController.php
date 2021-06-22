@@ -10,11 +10,15 @@ use App\Form\ReviewForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+
+ */
 class ProductController extends AbstractController
 {
     /**
@@ -53,9 +57,7 @@ class ProductController extends AbstractController
         ]);
 
         $reviewForm = null;
-        if ($this->getUser()) {
-            $reviewForm = $this->createForm(ReviewForm::class, new Review($this->getUser(), $product));
-        }
+
 
         return $this->renderForm('product/show.html.twig', [
             'product' => $product,
@@ -66,43 +68,4 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/product/{id}/reviews", name="app_product_reviews")
-     */
-    public function productReviews(Product $product, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager)
-    {
-        $reviewForm = null;
-        if ($request->isMethod('POST')) {
-            $this->denyAccessUnlessGranted('ROLE_USER');
-            $reviewForm = $this->createForm(ReviewForm::class, new Review($this->getUser(), $product));
-
-            $reviewForm->handleRequest($request);
-
-            if ($reviewForm->isSubmitted() && $reviewForm->isValid()) {
-                $entityManager->persist($reviewForm->getData());
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Thanks for your review! I like you!');
-
-                return $this->redirectToRoute('app_product_reviews', [
-                    'id' => $product->getId(),
-                ]);
-            }
-        }
-
-        return $this->renderForm('product/reviews.html.twig', [
-            'product' => $product,
-            'currentCategory' => $product->getCategory(),
-            'categories' => $categoryRepository->findAll(),
-            'reviewForm' => $reviewForm?: null,
-        ]);
-    }
-
-    /**
-     * @Route("/you-won")
-     */
-    public function youWon()
-    {
-        return $this->render('product/winner.html.twig');
-    }
 }

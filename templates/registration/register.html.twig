@@ -9,12 +9,6 @@
 {% block body %}
     <div class="container" style="margin-top: 100px;">
         <div class="row">
-            <div
-                class="col-12 col-md-3 order-2 order-md-1 mt-4 mt-md-0 text-center"
-                {{ stimulus_controller('featured-product-react', {
-                    product: featuredProduct|serialize('json', { groups: 'product:read'})
-                }) }}
-            ></div>
             <div class="col order-1 order-md-2">
                 <h1 class="mb-3">Create your account</h1>
 

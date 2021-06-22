@@ -10,12 +10,16 @@ use App\Repository\CategoryRepository;
 use App\Repository\ColorRepository;
 use App\Repository\ProductRepository;
 use App\Service\CartStorage;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_USER")
+ */
 class CartController extends AbstractController
 {
     /**
@@ -29,27 +33,9 @@ class CartController extends AbstractController
     }
 
     /**
-     * @Route("/cart/_featured", name="_app_cart_product_featured")
-     */
-    public function cartFeaturedProduct(ProductRepository $productRepository, Request $request, CartStorage $cartStorage): Response
-    {
-        $featuredProduct = $productRepository->findFeatured();
-        $addToCartForm = $this->createForm(AddItemToCartFormType::class, null, [
-            'product' => $featuredProduct,
-        ]);
-
-        return $this->renderForm('cart/cart.html.twig', [
-            'featuredProduct' => $featuredProduct,
-            'addToCartForm' => $addToCartForm,
-            'showDescription' => $request->query->get('description'),
-            'cart' => $cartStorage->getOrCreateCart(),
-        ]);
-    }
-
-    /**
      * @Route("/cart/_list", name="_app_cart_list")
      */
-    public function _shoppingCartList(CartStorage $cartStorage)
+    public function _shoppingCartList(CartStorage $cartStorage): Response
     {
         return $this->render('cart/_cartList.html.twig', [
             'cart' => $cartStorage->getOrCreateCart(),
