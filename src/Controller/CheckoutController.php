@@ -9,6 +9,7 @@ use App\Form\CheckoutFormType;
 use App\Form\EndCustomerFormType;
 use App\Repository\PurchaseRepository;
 use App\Service\CartStorage;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +26,7 @@ class CheckoutController extends AbstractController
     /**
      * @Route("/checkout", name="app_checkout")
      */
-    public function checkout(Request $request, CartStorage $cartStorage, EntityManagerInterface $entityManager, SessionInterface $session): Response
+    public function checkout(Request $request, MailService $mailService, CartStorage $cartStorage, EntityManagerInterface $entityManager, SessionInterface $session): Response
     {
         //$checkoutForm = $this->createForm(CheckoutFormType::class);
 
@@ -47,6 +48,8 @@ class CheckoutController extends AbstractController
             $purchase->setCustomerEmail('nomail@email.com');
 
             $purchase->addItemsFromCart($cartStorage->getCart());
+
+            $mailService->sendMailToHQ($purchase);
 
             $entityManager->persist($purchase);
             $entityManager->flush();
