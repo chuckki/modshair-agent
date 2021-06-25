@@ -1,0 +1,50 @@
+{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css')) %}
+<div class="container mt-4">
+    <h1 class="mb-4">
+        Bestellung abgeschlossen!
+    </h1>
+    <div class="component-light p-4">
+
+        Bestelldetails<br/><br/>
+
+        <code>
+            Kundenname: {{ purchase.customerName }}<br/>
+            Adresse: {{ purchase.customerAddress }}<br/>
+            PLZ: {{ purchase.customerZip }}<br/>
+            Ort: {{ purchase.customerCity }}<br/>
+            Telefon: {{ purchase.customerPhone }}<br/>
+        </code>
+<br><br>
+        <table class="table mt-4">
+            <tbody>
+            {% for item in purchase.purchaseItems %}
+                <tr>
+                    <td>
+                        {{ item.product.name }}
+                    </td>
+                    <td>
+                        {{ item.quantity }}
+                    </td>
+                    <td>
+                        {{ item.totalString |format_currency('EUR') }} <br>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td class="flex-grow-1">
+                    Gesamtpreis:
+                </td>
+                <td></td>
+                <td>
+                    {{ purchase.totalString |format_currency('EUR') }}
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+{% endapply %}
+

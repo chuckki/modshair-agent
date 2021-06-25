@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Purchase;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 
 class MailService
 {
@@ -13,29 +13,24 @@ class MailService
 
     public function __construct(MailerInterface $mailer, PurchaseToCsvService $purchaseToCsvService)
     {
-        $this->mailer = $mailer;
+        $this->mailer               = $mailer;
         $this->purchaseToCsvService = $purchaseToCsvService;
     }
 
-    public function sendMailToHQ(Purchase $purchase){
-
+    public function sendMailToHQ(Purchase $purchase): void
+    {
         $files = $this->purchaseToCsvService->createCSVFiles($purchase);
-
-        $files =
-
-            $email = (new Email())
-            ->from('hello@example.com')
-            ->to('you@example.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>')
-            ->attachFromPath('/path/to/documents/contract.doc', 'Contract', 'application/msword')
-;
-
+        $email = (new TemplatedEmail())->from('hello@example.com')->to('cschneider@modshair.de')->subject(
+            'Modshair Agent Bestellung'
+        )->htmlTemplate('email/confirmation.html.twig')->context(
+            [
+                'purchase'         => $purchase,
+                'purchaseForBrand' => $this->purchaseToCsvService->splitPurchaseforBrands($purchase),
+            ]
+        );
+        foreach ($files as $key => $file) {
+            $email->attachFromPath($file, $key, 'text/csv');
+        }
         $this->mailer->send($email);
     }
 }
