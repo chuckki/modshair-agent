@@ -20,7 +20,7 @@ class MailService
     public function sendMailToHQ(Purchase $purchase): void
     {
         $files = $this->purchaseToCsvService->createCSVFiles($purchase);
-        $email = (new TemplatedEmail())->from('hello@example.com')->to('cschneider@modshair.de')->subject(
+        $email = (new TemplatedEmail())->from('weclapp@icf-paris.de')->to('cschneider@modshair.de')->subject(
             'Modshair Agent Bestellung'
         )->htmlTemplate('email/confirmation.html.twig')->context(
             [
