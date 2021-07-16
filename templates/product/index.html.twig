@@ -72,7 +72,7 @@
                     </div>
                     <div class="px-2 my-3 flex justify-content-between">
                         <p class="p-0 d-inline">
-                            <strong>{{ product.priceString|format_currency('USD') }}</strong>
+                            <strong>{{ product.priceString|format_currency('EUR') }}</strong>
                         </p>
                         <a href="{{ path('app_product', { id: product.id }) }}" class="btn btn-info">Details</a>
                     </div>
