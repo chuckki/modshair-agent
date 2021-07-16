@@ -20,7 +20,6 @@ class EndCustomerFormType extends AbstractType
             [
                 'class'        => EndCustomer::class,
                 'choice_label' => function ($choice, $key, $value) {
-                //dump($choice);die("di");
                     /** $choice EndCustomer  */
                     return $choice->getCustomernumber(). " - " .$choice->getFirma();
                 },
