@@ -6,9 +6,8 @@
         {% endblock %}
         {% block javascripts %}
             {{ parent() }}
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"
-                    type="text/javascript"></script>
-
+            
+            <script src="{{ asset('flexselect/jquery.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('flexselect/liquidmetal.js') }}" type="text/javascript"></script>
             <script src="{{ asset('flexselect/jquery.flexselect.js') }}" type="text/javascript"></script>
         {% endblock %}
@@ -54,7 +53,8 @@
     </div>
     <script>
         jQuery(document).ready(function () {
-            $("select.flexselect").flexselect();
+            $("select.flexselect").flexselect({ hideDropdownOnEmptyInput: true });
+            $("#end_customer_form_endCustomer_flexselect").val('');
         });
     </script>
 {% endblock %}
