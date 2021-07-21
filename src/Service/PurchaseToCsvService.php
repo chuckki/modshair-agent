@@ -37,6 +37,7 @@ class PurchaseToCsvService
     public function createCSVFiles(Purchase $purchase): array
     {
         $orderNumber = dechex(time());
+        $orderSuffix = 0;
         $items       = $purchase->getPurchaseItems();
         $brands      = [];
         $endCustomer = $purchase->getEndcustomer();
@@ -55,7 +56,7 @@ class PurchaseToCsvService
             $price                               = number_format($price, 2);
             $price                               = str_replace('.', ',', $price);
             $productObj                          = $this->getCSVArray();
-            $productObj['ORDER NUMBER']          = $orderNumber;
+            $productObj['ORDER NUMBER']          = $orderNumber.'.'.$orderSuffix++;
             $productObj['Article number or EAN'] = $product->getProductNumber();
             $productObj['QUANTITY']              = $item->getQuantity();
             $productObj['MANUAL UNIT PRICE']     = $price;
