@@ -59,7 +59,7 @@ class CartController extends AbstractController
 
             $this->addFlash('success', 'Produkt in den Warenkorb gelegt!');
 
-            return $this->redirectToRoute('app_product', [
+            return $this->redirectToRoute('app_homepage', [
                 'id' => $product->getId(),
             ]);
         }
