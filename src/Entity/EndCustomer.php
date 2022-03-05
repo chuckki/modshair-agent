@@ -45,6 +45,11 @@ class EndCustomer
     private $city;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $country;
+
+    /**
      * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="endcustomer")
      */
     private $purchases;
@@ -148,4 +153,21 @@ class EndCustomer
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country): void
+    {
+        $this->country = $country;
+    }
+
 }
