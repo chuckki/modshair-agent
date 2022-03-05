@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\CartItem;
 use App\Entity\Color;
 use App\Entity\Product;
 use App\Form\AddItemToCartFormType;
@@ -54,10 +55,12 @@ class CartController extends AbstractController
         $addToCartForm->handleRequest($request);
         if ($addToCartForm->isSubmitted() && $addToCartForm->isValid()) {
             $cart = $cartStorage->getOrCreateCart();
-            $cart->addItem($addToCartForm->getData());
+            /** @var CartItem $cardItem */
+            $cardItem = $addToCartForm->getData();
+            $cart->addItem($cardItem);
             $cartStorage->save($cart);
 
-            $this->addFlash('success', 'Produkt in den Warenkorb gelegt!');
+            $this->addFlash('success', $cardItem->getQuantity(). "x ". $cardItem->getProduct()->getName() .' in den Warenkorb gelegt!');
 
             return $this->redirectToRoute('app_homepage', [
                 'id' => $product->getId(),
