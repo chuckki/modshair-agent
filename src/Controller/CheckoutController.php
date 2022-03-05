@@ -38,6 +38,7 @@ class CheckoutController extends AbstractController
 
             /** @var EndCustomer $endcustomer */
             $endcustomer = $checkoutForm->getData()['endCustomer'];
+            $note = $checkoutForm->getData()['note'];
 
             $purchase = new Purchase();
             $purchase->setEndcustomer($endcustomer);
@@ -46,6 +47,7 @@ class CheckoutController extends AbstractController
             $purchase->setCustomerZip($endcustomer->getPostcode());
             $purchase->setCustomerName($endcustomer->getFirma());
             $purchase->setCustomerEmail('nomail@email.com');
+            $purchase->setNote($note);
 
             $purchase->addItemsFromCart($cartStorage->getCart());
 

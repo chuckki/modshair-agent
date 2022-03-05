@@ -42,6 +42,16 @@
                     {{ purchase.totalString |format_currency('EUR') }}
                 </td>
             </tr>
+
+            <tr>
+                <td class="flex-grow-1">
+                    Bemerkung:
+                </td>
+                <td></td>
+                <td>
+                    {{ purchase.note }}
+                </td>
+            </tr>
             </tfoot>
         </table>
     </div>

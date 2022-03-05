@@ -18,6 +18,15 @@
                     <div class="form-row">
                         {{ form_row(checkoutForm.endCustomer, {
                             row_attr: { class: 'col mb-3' },
+                            attr: { class: 'flexselect'},
+                            required: true
+                        }) }}
+
+                    </div>
+
+                    <div class="form-row">
+                        {{ form_row(checkoutForm.note, {
+                            row_attr: { class: 'col mb-3' },
                             attr: { class: 'flexselect'}
                         }) }}
 

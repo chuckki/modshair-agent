@@ -57,6 +57,11 @@ class Purchase
     private $customerPhone;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $note;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $isShipped = false;
@@ -245,4 +250,21 @@ class Purchase
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param mixed $note
+     */
+    public function setNote($note): void
+    {
+        $this->note = $note;
+    }
+
 }
