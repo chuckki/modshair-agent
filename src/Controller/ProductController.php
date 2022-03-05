@@ -39,6 +39,8 @@ class ProductController extends AbstractController
             ]);
         }
 
+        $products = $productRepository->search(null, null);
+
         return $this->render('product/index.html.twig', [
             'currentCategory' => $category,
             'categories' => $categoryRepository->findAll(),

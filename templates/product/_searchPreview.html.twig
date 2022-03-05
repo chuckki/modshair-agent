@@ -1,30 +1,41 @@
-<div class="list-group">
-    {% for product in products %}
-        <a
-            role="option"
-            class="list-group-item list-group-item-action"
-            href="{{ path('app_product', { id: product.id }) }}"
-        >
-            <div class="d-flex align-items-center justify-content-between">
-                <div>
-                    <img
-                        alt="{{ product.name }}"
+{% for product in products %}
+            <div class="col-xs-12 col-12 mb-2 pb-2">
+                <div class="component-light d-flex" style="justify-content: space-between;">
+                    <div class="product-image d-flex"  style="justify-content: space-between;align-items: center;">
+                        <a href="{{ path('app_product', { id: product.id }) }}">
+                            <img
+                                alt="{{ product.name }}"
+                                {% if product.category.id == 1 %}
+                                src="{{ asset('/uploads/products/milbon-logo.png') }}"
+                                {% endif %}
+                                {% if product.category.id == 2 %}
+                                src="{{ asset('/uploads/products/tahe-logo.png') }}"
+                                {% endif %}
+                                    style="height: 50px !important; width: auto;"
+                                class="d-block mb-2"
+                            >
+                        </a>
+                        <div class="d-flex justify-content-between px-2 pt-3 mb-2">
+                            <h3 style="font-size: 1rem;">
+                                <a href="{{ path('app_product', { id: product.id }) }}">
+                                    {{ product.name }}
+                                </a>
+                            </h3>
 
-                        {% if product.category.id == 1 %}
-                        src="{{ asset('/uploads/products/milbon-logo.png') }}"
-                        {% endif %}
-                        {% if product.category.id == 2 %}
-                        src="{{ asset('/uploads/products/tahe-logo.png') }}"
-                        {% endif %}
-
-                        class="rounded"
-                    >
-                    <span class="px-1">{{ product.name }}</span>
+                        </div>
+                    </div>
+                    <div class="px-2 my-3 flex justify-content-between">
+                        <p class="p-0 d-inline">
+                            <strong>{{ product.priceString|format_currency('EUR') }}</strong>
+                        </p>
+                        <a href="{{ path('app_product', { id: product.id }) }}" class="btn btn-info">Details</a>
+                    </div>
                 </div>
-                <em>{{ product.priceString|format_currency('EUR') }}</em>
             </div>
-        </a>
-    {% else %}
-        <div class="list-group-item" role="option" aria-disabled="true">Kein Ergebnis!</div>
-    {% endfor %}
-</div>
+        {% else %}
+            <div class="col-12">
+                <h5 class="ml-4 mt-4" >
+                    Whoopsie Daisy, keine Produkte verfügbar!
+                </h5>
+            </div>
+        {% endfor %}
