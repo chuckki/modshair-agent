@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\EndCustomer;
 use App\Entity\Purchase;
 use App\Form\CheckoutFormType;
@@ -26,20 +25,21 @@ class CheckoutController extends AbstractController
     /**
      * @Route("/checkout", name="app_checkout")
      */
-    public function checkout(Request $request, MailService $mailService, CartStorage $cartStorage, EntityManagerInterface $entityManager, SessionInterface $session): Response
-    {
+    public function checkout(
+        Request $request,
+        MailService $mailService,
+        CartStorage $cartStorage,
+        EntityManagerInterface $entityManager,
+        SessionInterface $session
+    ): Response {
         //$checkoutForm = $this->createForm(CheckoutFormType::class);
-
         $checkoutForm = $this->createForm(EndCustomerFormType::class);
-
-
         $checkoutForm->handleRequest($request);
         if ($checkoutForm->isSubmitted() && $checkoutForm->isValid()) {
 
             /** @var EndCustomer $endcustomer */
             $endcustomer = $checkoutForm->getData()['endCustomer'];
-            $note = $checkoutForm->getData()['note'];
-
+            $note        = $checkoutForm->getData()['note'];
             $purchase = new Purchase();
             $purchase->setEndcustomer($endcustomer);
             $purchase->setCustomerAddress($endcustomer->getStreet());
@@ -48,14 +48,10 @@ class CheckoutController extends AbstractController
             $purchase->setCustomerName($endcustomer->getFirma());
             $purchase->setCustomerEmail('nomail@email.com');
             $purchase->setNote($note);
-
             $purchase->addItemsFromCart($cartStorage->getCart());
-
             $mailService->sendMailToHQ($purchase);
-
             $entityManager->persist($purchase);
             $entityManager->flush();
-
             $session->set('purchase_id', $purchase->getId());
             $cartStorage->clearCart();
 
@@ -68,13 +64,24 @@ class CheckoutController extends AbstractController
     }
 
     /**
+     * @Route("/checkout/_element", name="_app_checkout_element")
+     */
+    public function _shoppingCartList(): Response
+    {
+        $checkoutForm = $this->createForm(EndCustomerFormType::class);
+
+        return $this->renderForm('checkout/_checkout.html.twig', [
+            'checkoutForm' => $checkoutForm,
+        ]);
+    }
+
+    /**
      * @Route("/confirmation", name="app_confirmation")
      */
     public function confirmation(SessionInterface $session, PurchaseRepository $purchaseRepository): Response
     {
         $purchaseId = $session->get('purchase_id');
-        $purchase = $purchaseRepository->find($purchaseId);
-
+        $purchase   = $purchaseRepository->find($purchaseId);
         if (!$purchase) {
             throw $this->createNotFoundException('No purchase found');
         }

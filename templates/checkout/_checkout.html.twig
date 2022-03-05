@@ -1,0 +1,41 @@
+<div class="p-3">
+
+    {{ form_start(checkoutForm) }}
+    <div class="form-row">
+        {{ form_row(checkoutForm.endCustomer, {
+            row_attr: { class: 'col mb-3' },
+            attr: { class: 'flexselect'},
+            required: true
+        }) }}
+
+    </div>
+
+    <div class="form-row">
+        {{ form_row(checkoutForm.note, {
+            row_attr: { class: 'col mb-3' },
+            attr: { class: 'flexselect'}
+        }) }}
+
+    </div>
+
+    <div class="form-row d-flex justify-content-end mt-4">
+        <div>
+            <button type="submit" class="btn btn-success btn-lg me-3" formnovalidate>
+                Bestellung abschicken
+            </button>
+        </div>
+        <div>
+            <a href="{{ path('app_cart') }}" class="btn btn-secondary btn-lg">
+                zurück zum Warenkorb
+            </a>
+        </div>
+    </div>
+    {{ form_end(checkoutForm) }}
+    <script>
+        jQuery(document).ready(function () {
+            $("select.flexselect").flexselect({hideDropdownOnEmptyInput: true});
+            $("#end_customer_form_endCustomer_flexselect").val('');
+        });
+
+    </script>
+</div>

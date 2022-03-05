@@ -9,50 +9,47 @@
 
 {% block body %}
     <div class="container-fluid container-xl mt-4">
-        <div class="row">
-            <div class="col-12 col-lg-12 cart">
+    <div class="row">
+        <div class="col-12 col-lg-12 cart" class="p-3"
+                {{ stimulus_controller('reload-content', {
+                    url: path('_app_checkout_element')
+                }) }}
+             data-action="add-customer:async:submitted->reload-content#refreshContent">
+
+            <div style="display: flex;justify-content: space-between;">
+
                 <h1>Checkout</h1>
-                <div class="p-3">
-
-                    {{ form_start(checkoutForm) }}
-                    <div class="form-row">
-                        {{ form_row(checkoutForm.endCustomer, {
-                            row_attr: { class: 'col mb-3' },
-                            attr: { class: 'flexselect'},
-                            required: true
+                <form
+                        action="{{ path('app_add_new_customer') }}"
+                        method="POST"
+                        {{ stimulus_controller('add-customer', {
+                            title: 'Neukunde',
+                            icon: 'question',
+                            confirmButtonText: 'Neuanlegen',
+                            submitAsync: true,
+                            url: path('app_add_new_customer')
                         }) }}
+                        data-action="add-customer#onSubmit"
+                >
+                    <input type="hidden" name="_token" value="{{ csrf_token('remove_item') }}"/>
 
+                    <div data-add-customer-target="results">
+                        <button class="ym-2 btn btn-success btn-sm">
+                            <i class="fa fa-user-plus"></i> Neukunde
+                        </button>
                     </div>
-
-                    <div class="form-row">
-                        {{ form_row(checkoutForm.note, {
-                            row_attr: { class: 'col mb-3' },
-                            attr: { class: 'flexselect'}
-                        }) }}
-
-                    </div>
-
-                    <div class="form-row d-flex justify-content-end mt-4">
-                        <div>
-                            <button type="submit" class="btn btn-success btn-lg me-3" formnovalidate>
-                                Bestellung abschicken
-                            </button>
-                        </div>
-                        <div>
-                            <a href="{{ path('app_cart') }}" class="btn btn-secondary btn-lg">
-                                zurück zum Warenkorb
-                            </a>
-                        </div>
-                    </div>
-                    {{ form_end(checkoutForm) }}
-                </div>
+                </form>
             </div>
+
+            <div>
+                <div
+                        data-reload-content-target="content">
+                    {{ include('checkout/_checkout.html.twig') }}
+                </div>
+
+            </div>
+
         </div>
     </div>
-    <script>
-        jQuery(document).ready(function () {
-            $("select.flexselect").flexselect({ hideDropdownOnEmptyInput: true });
-            $("#end_customer_form_endCustomer_flexselect").val('');
-        });
-    </script>
+    </div>
 {% endblock %}

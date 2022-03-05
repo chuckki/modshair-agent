@@ -4,12 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Product;
-use App\Entity\Review;
 use App\Form\AddItemToCartFormType;
-use App\Form\ReviewForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,8 +35,6 @@ class ProductController extends AbstractController
                 'products' => $products,
             ]);
         }
-
-        $products = $productRepository->search(null, null);
 
         return $this->render('product/index.html.twig', [
             'currentCategory' => $category,
