@@ -57,8 +57,7 @@ class Product
     }
 
     /**
-     * @ORM\Column(type="string", length=20)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $brand = 'Low End Luxury';
 
@@ -76,8 +75,7 @@ class Product
     private $price;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\GreaterThanOrEqual(0)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $stockQuantity = 0;
 
