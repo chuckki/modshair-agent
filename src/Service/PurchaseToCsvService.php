@@ -114,7 +114,7 @@ class PurchaseToCsvService
             "Straße"                                 => "",
             "Stadt"                                  => "",
             "Postleitzahl"                           => "",
-            "LAND"                                   => "",
+            "LAND"                                   => "Deutschland",
             "Abweichende Lieferadresse Firma"        => "",
             "Abweichende Lieferadresse Firma-Zusatz" => "",
             "Abweichende Lieferadresse Vorname"      => "",
