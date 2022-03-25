@@ -19,9 +19,17 @@ export default class extends Controller {
     }
 
     async search(term) {
+        const myArray = window.location.href.split("/");
+        let length = myArray.length;
+        let cat = 0;
+        if(myArray[length-2] === 'category'){
+            cat = myArray[length-1];
+        }
+
         const params = new URLSearchParams({
             q: term,
-            preview: 1
+            preview: 1,
+            cat: cat
         });
         const response = await fetch(`${this.urlValue}?${params.toString()}`);
 
