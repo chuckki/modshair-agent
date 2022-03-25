@@ -56,7 +56,8 @@ class PurchaseToCsvService
             $price                                = number_format($price, 2);
             $price                                = str_replace('.', ',', $price);
             $productObj                           = $this->getCSVArray();
-            $productObj['AUFTRAGSNUMMER']         = $orderNumber.'.'.$orderSuffix++;
+//            $productObj['AUFTRAGSNUMMER']         = $orderNumber.'.'.$orderSuffix++;
+            $productObj['AUFTRAGSNUMMER']         = $orderNumber;
             $productObj['Artikelnummer oder EAN'] = $product->getProductNumber();
             $productObj['MENGE']                  = $item->getQuantity();
             $productObj['PREIS']                  = $price;
