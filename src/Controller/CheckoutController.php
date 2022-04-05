@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -30,7 +31,8 @@ class CheckoutController extends AbstractController
         MailService $mailService,
         CartStorage $cartStorage,
         EntityManagerInterface $entityManager,
-        SessionInterface $session
+        SessionInterface $session,
+        Security $security
     ): Response {
         //$checkoutForm = $this->createForm(CheckoutFormType::class);
         $checkoutForm = $this->createForm(EndCustomerFormType::class);
@@ -49,7 +51,7 @@ class CheckoutController extends AbstractController
             $purchase->setCustomerEmail('nomail@email.com');
             $purchase->setNote($note);
             $purchase->addItemsFromCart($cartStorage->getCart());
-            $mailService->sendMailToHQ($purchase);
+            $mailService->sendMailToHQ($purchase,$security->getUser());
             $entityManager->persist($purchase);
             $entityManager->flush();
             $session->set('purchase_id', $purchase->getId());
